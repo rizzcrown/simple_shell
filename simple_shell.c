@@ -6,77 +6,31 @@
 
 #define MAX_COMMAND_LENGTH 1000
 
-/*There are no built-in commands for this shell program*/
-
-/**
- * main - Simple shell program
- * @argc: The number of arguments passed to the program
- * @argv: An array of pointers to the arguments
- * @envp: An array of pointers to the environment variables
- *
- * Return: 0 on success, otherwise 1
- */
-
-int main(int argc, char *argv[],char **envp)
+int main(int argc, char *argv[], char **envp)
 {
-	char command[MAX_COMMAND_LENGTH];
-	pid_t pid;
-	int status;
-
-	while (1)
-	{
-		printf("simple-shell->> ");
-
-		if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
-		{
-			/*For terminating the 'simple shell' program*/
-			break;
-		}
-
-		if (command[0] == '\n')
-		{
-			/**Prompts the user to enter another command if the user has 
-			 *entered a blank line 
-			 */
-			continue;
-		}
-
-		char *args[MAX_COMMAND_LENGTH];
-		char *arg = strtok(command, " \t\n");
-		int i = 0;
-
-		while (arg != 0)
-		{
-			args[i++] = arg;
-			arg = strtok(NULL, " \t\n");
-		}
-
-		args[i] = NULL;
-
-		/**Creates a new process for the child program "for external commands".
-		 *The parent process waits till its child terminates before it continues
-		 *running .
-		 */
-		pid = fork();
-
-		if (pid == 0)
-		{
-			execvp(args[0], args);
-			fprintf(stderr, "Simple_shell: Command not found: %s\n", args[0]);
-			exit(1);
-		} 
-		else if (pid < 0)
-		{
-			fprintf(stderr, "Simple shell: fork failed\n");
-			exit(1);
-		} 
-		else 
-		{
-			waitpid(pid,&status,0);
-		}
-	}
-		
-	return (0);
+    char command[MAX_COMMAND_LENGTH], *args[MAX_COMMAND_LENGTH], *arg;
+    pid_t pid;
+    int status, i;
+    while (printf("simple-shell->> "), fgets(command, MAX_COMMAND_LENGTH, stdin) != NULL)
+    {
+        if (command[0] == '\n')
+            continue;
+        for (arg = strtok(command, " \t\n"), i = 0; arg != NULL; arg = strtok(NULL, " \t\n"))
+            args[i++] = arg;
+        args[i] = NULL;
+        if ((pid = fork()) == 0)
+        {
+            execvp(args[0], args);
+            fprintf(stderr, "Simple_shell: Command not found: %s\n", args[0]);
+            exit(1);
+        }
+        else if (pid < 0)
+        {
+            fprintf(stderr, "Simple shell: fork failed\n");
+            exit(1);
+        }
+        else
+            waitpid(pid, &status, 0);
+    }
+    return 0;
 }
-	
-
