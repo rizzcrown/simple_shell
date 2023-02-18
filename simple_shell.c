@@ -6,9 +6,18 @@
 
 #define MAX_COMMAND_LENGTH 1000
 
-//There are no built-in commands for this shell program
+/*There are no built-in commands for this shell program*/
 
-int main (int argc, char * argv[],char **envp)
+/**
+ * main - Simple shell program
+ * @argc: The number of arguments passed to the program
+ * @argv: An array of pointers to the arguments
+ * @envp: An array of pointers to the environment variables
+ *
+ * Return: 0 on success, otherwise 1
+ */
+
+int main(int argc, char *argv[],char **envp)
 {
 	char command[MAX_COMMAND_LENGTH];
 	pid_t pid;
@@ -16,34 +25,40 @@ int main (int argc, char * argv[],char **envp)
 
 	while (1)
 	{
-		printf ("simple-shell->> ");
+		printf("simple-shell->> ");
 
 		if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
 		{
-			//For terminating the 'simple shell' program
+			/*For terminating the 'simple shell' program*/
 			break;
 		}
+
 		if (command[0] == '\n')
 		{
-			//Prompts the user to enter another command if the user has 
-			//entered a blank line 
+			/**Prompts the user to enter another command if the user has 
+			 *entered a blank line 
+			 */
 			continue;
 		}
 
-		char * args[MAX_COMMAND_LENGTH];
+		char *args[MAX_COMMAND_LENGTH];
 		char *arg = strtok(command, " \t\n");
 		int i = 0;
+
 		while (arg != 0)
 		{
 			args[i++] = arg;
 			arg = strtok(NULL, " \t\n");
 		}
+
 		args[i] = NULL;
 
-		//Creates a new process for the child program "for external commands".
-		//The parent process waits till its child terminates before it continues
-		//running .
+		/**Creates a new process for the child program "for external commands".
+		 *The parent process waits till its child terminates before it continues
+		 *running .
+		 */
 		pid = fork();
+
 		if (pid == 0)
 		{
 			execvp(args[0], args);
@@ -53,7 +68,7 @@ int main (int argc, char * argv[],char **envp)
 		else if (pid < 0)
 		{
 			fprintf(stderr, "Simple shell: fork failed\n");
-			exit (1);
+			exit(1);
 		} 
 		else 
 		{
