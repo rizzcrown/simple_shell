@@ -6,6 +6,8 @@
 
 #define MAX_COMMAND_LENGTH 1000
 
+//There are no built-in commands for this shell program
+
 int main (int argc, char * argv[],char **envp)
 {
 	char command[MAX_COMMAND_LENGTH];
@@ -38,6 +40,9 @@ int main (int argc, char * argv[],char **envp)
 		}
 		args[i] = NULL;
 
+		//Creates a new process for the child program "for external commands".
+		//The parent process waits till its child terminates before it continues
+		//running .
 		pid = fork();
 		if (pid == 0)
 		{
