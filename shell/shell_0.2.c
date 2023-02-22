@@ -28,7 +28,7 @@ int main()
     const char special_chars[] = {';', '|', '>', '<'};
     for (int i = 0; i < strlen(special_chars); i++)
     {
-    if (strchr(command, special_chars[i]))
+      if (strchr(command, special_chars[i]))
       printf("Error: Advanced features not supported\n");
       continue;
     }
