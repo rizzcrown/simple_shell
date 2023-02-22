@@ -3,6 +3,13 @@
 #define MAX_COMMAND_LENGTH 100
 #define MAX_ARGUMENTS 10
 
+/*
+ * This program is a simple shell that reads user input, searches for the corresponding
+ * executable file in the system's directories specified in the PATH environment variable,
+ * and executes the command with the specified arguments.
+ * The program continues to prompt for user input until the user types "exit".
+ */
+
 int main(void)
 {
     char command[MAX_COMMAND_LENGTH], *path_env = getenv("PATH");

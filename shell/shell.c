@@ -1,7 +1,13 @@
 #include "main.h"
 
 #define MAX_COMMAND_LENGTH 100
-
+/*
+ * A simple shell program that allows the user to execute basic commands
+ * on a Unix-like operating system. The program prompts the user for input,
+ * and then executes the entered command in a child process using the `fork`
+ * and `execve` system calls. The parent process waits for the child process
+ * to finish before prompting the user for input again.
+ */
 
 int main(void)
 {

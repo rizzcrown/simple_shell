@@ -14,6 +14,15 @@ void env_shell() {
     }
 }
 
+/*
+ * This program is a simple shell that reads user input, searches for the corresponding
+ * executable file in the system's directories specified in the PATH environment variable,
+ * and executes the command with the specified arguments.
+ * In addition to executing external commands, this shell supports built-in commands "exit" 
+ * and "env" to exit the shell and display the current environment variables, respectively.
+ * The program continues to prompt for user input until the user types "exit".
+ */
+
 int main(void) 
 {
     char command[MAX_COMMAND_LENGTH], *path_env = getenv("PATH");

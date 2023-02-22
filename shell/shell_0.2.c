@@ -3,6 +3,14 @@
 #define MAX_COMMAND_LENGTH 100
 #define MAX_ARGUMENTS 10
 
+/*
+ * A simple command-line shell that reads user input and executes commands
+ * by forking a child process and running the specified command in it. The shell
+ * supports basic commands that do not involve advanced features such as pipes,
+ * redirects, or multiple commands separated by semicolons. If a command is not
+ * found, the shell prints an error message.
+ */
+
 int main()
 {
   char command[MAX_COMMAND_LENGTH];
