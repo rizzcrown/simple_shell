@@ -6,6 +6,8 @@
 int main()
 {
   char command[MAX_COMMAND_LENGTH];
+  pid_t pid;
+  int status;
   
   while (1)
   {
@@ -38,10 +40,21 @@ int main()
     
     if (arg_count == 0)
       continue;
-    if (execve(args[0], args, NULL) == -1)
+    pid = fork();
+    if (pid == 0)
     {
+      execve(args[0], args, NULL);
       printf("Error: Command not found: %s\n", args[0]);
+    }
+    else if (pid < 0)
+    {
+      printf("Error: Fork failed");
+    }
+    else
+    {
+      wait(&status);
     }
   }
   return 0;
 }
+

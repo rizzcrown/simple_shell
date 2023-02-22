@@ -14,7 +14,8 @@ void env_shell() {
     }
 }
 
-int main(void) {
+int main(void) 
+{
     char command[MAX_COMMAND_LENGTH], *path_env = getenv("PATH");
     while (1)
     {
@@ -27,7 +28,8 @@ int main(void) {
         char *token = strtok(command, " \t");
         while (token)
         {
-            if (arg_count == MAX_ARGUMENTS) {
+            if (arg_count == MAX_ARGUMENTS)
+            {
                 printf("Error: Too many arguments\n");
                 break;
             }
@@ -36,22 +38,32 @@ int main(void) {
         args[arg_count] = NULL;
         if (arg_count == 0)
             continue;
-        if (strcmp(args[0], "exit") == 0) {
+        if (strcmp(args[0], "exit") == 0)
             exit_shell();
-        } else if (strcmp(args[0], "env") == 0)
-        {
+        else if (strcmp(args[0], "env") == 0)
             env_shell();
-        } else
+        else
         {
-            char command_path[MAX_COMMAND_LENGTH];
-            int found = 0;
-            for (char *path_token = strtok(path_env, ":"); path_token && !found; path_token = strtok(NULL, ":"))
+            pid_t pid = fork();
+            if (pid == -1)
+                printf("Error: Fork failed\n");
+            else if (pid == 0) 
             {
-                snprintf(command_path, MAX_COMMAND_LENGTH, "%s/%s", path_token, args[0]);
-                if (access(command_path, X_OK) == 0) found = 1, execv(command_path, args);
+                char command_path[MAX_COMMAND_LENGTH];
+                int found = 0;
+                for (char *path_token = strtok(path_env, ":"); path_token && !found; path_token = strtok(NULL, ":"))
+                {
+                    snprintf(command_path, MAX_COMMAND_LENGTH, "%s/%s", path_token, args[0]);
+                    if (access(command_path, X_OK) == 0) found = 1, execvp(command_path, args);
+                }
+                if (!found) 
+                    printf("Error: Command not found: %s\n", args[0]);
+                exit(0);
             }
-            if (!found) 
-                printf("Error: Command not found: %s\n", args[0]);
+            else
+            {
+                waitpid(pid, NULL, 0);
+            }
         }
     }
     return 0;
