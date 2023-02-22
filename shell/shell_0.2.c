@@ -25,11 +25,14 @@ int main()
     
     command[strcspn(command, "\n")] = 0;
     
-    if (strchr(command, ';') || strchr(command, '|') || strchr(command, '>') || strchr(command, '<'))
+    const char special_chars[] = {';', '|', '>', '<'};
+    for (int i = 0; i < strlen(special_chars); i++)
     {
+    if (strchr(command, special_chars[i]))
       printf("Error: Advanced features not supported\n");
       continue;
     }
+
     
     char *args[MAX_ARGUMENTS+1];
     int arg_count = 0;
