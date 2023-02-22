@@ -33,7 +33,6 @@ int main()
       continue;
     }
 
-    
     char *args[MAX_ARGUMENTS+1];
     int arg_count = 0;
     char *token = strtok(command, " \t");
